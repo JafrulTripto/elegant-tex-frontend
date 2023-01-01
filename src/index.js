@@ -7,6 +7,9 @@ import {ContextProvider} from "./contexts/ContextProvider";
 import 'antd/dist/reset.css';
 import {ConfigProvider} from "antd";
 import reportWebVitals from './reportWebVitals';
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import {colors} from "./utils/Colors";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,8 +18,21 @@ root.render(
       theme={{
         token: {
           colorPrimary: '#00b96b',
+          colorLink:colors.primary
         },
       }}>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <RouterProvider router={router}/>
     </ConfigProvider>
   </ContextProvider>

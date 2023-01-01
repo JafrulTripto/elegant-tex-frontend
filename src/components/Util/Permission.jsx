@@ -6,6 +6,7 @@ const Permission = (props) => {
 
   const { permissions } = useStateContext();
 
+  console.log(props.required)
   const checkPermissions = () => {
     if (permissions) {
       if (permissions.indexOf(props.required) > -1) {
@@ -14,6 +15,10 @@ const Permission = (props) => {
 
     }
     return false;
+  }
+
+  if (!props.required) {
+    return props.children;
   }
   return (
     <>

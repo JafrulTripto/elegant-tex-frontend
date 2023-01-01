@@ -3,6 +3,7 @@ import {Card, List} from "antd";
 import {FlagOutlined, UnlockOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 import {colors} from "../../utils/Colors.js";
 import {NavLink} from "react-router-dom";
+import Permission from "../Util/Permission";
 
 const SettingsList = () => {
 
@@ -16,25 +17,29 @@ const SettingsList = () => {
       title: 'Role Settings',
       icon: <UsergroupAddOutlined style={iconStyle} />,
       link: "/settings/roleSettings",
-      description: "Manage the application permissions. Permissions set is a collection of settings that give users access to various functions on a page. Permission set may be granted to any number of roles."
+      description: "Manage the application roles.User can have multiple roles.",
+      permission:null
     },
     {
       title: 'Permission Settings',
       icon: <UnlockOutlined style={iconStyle} />,
       link: "/settings/permissionSettings",
-      description: "Manage the application permissions. Permissions set is a collection of settings that give users access to various functions on a page. Permission set may be granted to any number of roles."
+      description: "Manage the application permissions. Permissions set is a collection of settings that give users access to various functions on a page. Permission set may be granted to any number of roles.",
+      permission:null
     },
     {
       title: 'Marketplace Settings',
       icon: <FlagOutlined style={iconStyle} />,
       link: "/settings/marketplaceSettings",
-      description: "Create and manage the business pages as you need. These business pages will need in order creation."
+      description: "Create and manage the business pages as you need. These business pages will need in order creation.",
+      permission:null
     },
     {
       title: 'Product Settings',
       icon: <FlagOutlined style={iconStyle} />,
       link: "/settings/productSettings",
-      description: "Create and manage the business pages as you need. These business pages will need in order creation."
+      description: "Create and manage the business pages as you need. These business pages will need in order creation.",
+      permission:null
     },
   ];
   return (
@@ -44,15 +49,16 @@ const SettingsList = () => {
         itemLayout="horizontal"
         dataSource={data}
         renderItem={(item) => (
+          <Permission required={item.permission}>
+            <List.Item>
+              <List.Item.Meta
+                avatar={item.icon}
+                title={<NavLink to={item.link}>{item.title}</NavLink>}
+                description={item.description}
+              />
+            </List.Item>
+          </Permission>
 
-
-          <List.Item>
-            <List.Item.Meta
-              avatar={item.icon}
-              title={<NavLink to={item.link}>{item.title}</NavLink>}
-              description={item.description}
-            />
-          </List.Item>
         )}
       />
 
