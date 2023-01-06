@@ -1,9 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --primaryColor: #1DA57A;
   --primaryDark: #001d3d;
   --secondaryColor: #003566;
   --secondaryDark: #003566;
 }
+
 
 body {
   margin: 0;
@@ -18,7 +23,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   monospace;
 }
-
+ul {
+  padding-inline-start: 0;
+}
 .trigger {
   padding: 10px;
   font-size: 20px;

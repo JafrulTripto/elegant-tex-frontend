@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import useAxios from '../../utils/useAxios';
+import axiosClient from "../axios-client";
 
 
 function Merchants() {
@@ -18,7 +18,7 @@ function Merchants() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  let api = useAxios();
+
 
   useEffect(() => {
       fetchMerchants();
@@ -26,13 +26,13 @@ function Merchants() {
 
 
   const addNewMerchant = () => {
-      navigate('/merchants/new-merchant')
+      navigate('/merchants/merchantForm')
   }
   const fetchMerchants = async (page = 1) => {
       setLoading(true);
       try {
-          const link = page > 1 ? `/Merchants/index?page=${page}` : "/merchants/index"
-          const Merchants = await api.get(`${process.env.REACT_APP_BASE_URL}${link}`);
+          const link = page > 1 ? `/merchants/index?page=${page}` : "/merchants/index"
+          const Merchants = await axiosClient.get(link);
           setLoading(false);
           const MerchantData = Merchants.data.data.map((data) => {
               return { ...data, key: data.id }
@@ -47,7 +47,7 @@ function Merchants() {
 
   const renderMerchantAvater = (image) => {
     if (image) {
-        const imagePath = `${process.env.REACT_APP_BASE_URL}/files/upload/${image.id}`
+        const imagePath = `${process.env.REACT_APP_API_BASE_URL}/files/upload/${image.id}`
         return (
             <Avatar
                 src={imagePath}
@@ -72,7 +72,7 @@ const renderActionButtons = (record) => {
 const confirmDeleteMerchant = async (id) => {
   try {
       const url = `/Merchants/delete?id=${id}`;
-      const data = await api.get(`${process.env.REACT_APP_BASE_URL}${url}`);
+      const data = await axiosClient.get(url);
       toast.warning(data.data.message);
       fetchMerchants();
 

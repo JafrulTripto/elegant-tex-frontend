@@ -14,6 +14,8 @@ import ProductSettings from "./views/ProductSettings.jsx";
 import MarketplaceSettings from "./views/MarketplaceSettings.jsx";
 import OrderFrom from "./views/OrderFrom.jsx";
 import Order from "./views/Order.jsx";
+import Merchants from "./views/Merchants";
+import MerchantForm from "./views/MerchantForm";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
       {
         path: '/dashboard',
         element: <Dashboard/>
+      },
+      {
+        path: '/merchants',
+        element: <Merchants/>
+      },
+      {
+        path: '/merchants/merchantForm',
+        element: <MerchantForm/>
       },
       {
         path: '/orders',

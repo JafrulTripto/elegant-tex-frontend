@@ -264,9 +264,31 @@ const OrderFrom = () => {
 
   }
 
-  const renderMerchantInfo = () => {
-
-  }
+  const renderMerchantInfo =  (
+    <>
+      <Divider style={{color: colors.primary}}>Merchant Info</Divider>
+      <Row gutter={24}>
+        <Col xs={24} md={12} lg={6}>
+          <Form.Item
+            name="merchant"
+            label="Merchant"
+            rules={[
+              {
+                required: true,
+                message: 'Please input customer name!',
+              },
+            ]}
+          >
+            <Select loading={merchantsLoading} onFocus={onMerchantsFocus}>
+              {merchants.map(data => {
+                return <Option value={data.id} key={data.id}>{data.name}</Option>
+              })}
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
+    </>
+  )
 
   const renderCustomerInfo = (
     <>
@@ -555,7 +577,7 @@ const OrderFrom = () => {
           </Col>
         </Row>
 
-        {orderType === OrderTypeEnum.MARKETPLACE ? renderCustomerInfo : renderMerchantInfo()}
+        {orderType === OrderTypeEnum.MARKETPLACE ? renderCustomerInfo : renderMerchantInfo}
         <Divider style={{color: colors.primary}}>Delivery & Billing</Divider>
         <Row gutter={24}>
           <Col xs={24} md={12} lg={6}>

@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { Card, Descriptions, Skeleton, Image, Space, Col, Row, Empty } from 'antd';
+import {useParams} from 'react-router-dom';
+import {toast} from 'react-toastify';
+import {Card, Descriptions, Skeleton, Image, Space, Col, Row, Empty, Tag, Table} from 'antd';
 import axiosClient from "../axios-client.js";
 import {colors} from "../utils/Colors.js";
+import moment from "moment";
+import {CalendarOutlined} from "@ant-design/icons";
+import PaymentSummary from "../components/Order/PaymentSummary";
+import CustomerInfo from "../components/Order/CustomerInfo";
+import OrderHeader from "../components/Order/OrderHeader";
 
 
 const Order = () => {
@@ -13,15 +18,12 @@ const Order = () => {
   const [order, setOrder] = useState({});
 
 
-  const { id } = useParams()
+  const {id} = useParams()
 
 
   useEffect(() => {
     fetchOrders();
-
-    return () => {
-
-    }
+    console.log(order)
   }, [])
 
   const fetchOrders = async () => {
@@ -29,7 +31,8 @@ const Order = () => {
     setLoading(true);
     try {
       const order = await axiosClient.get(`/orders/getOrder/${id}`);
-      setOrder({ ...order.data })
+      console.log(order)
+      setOrder({...order.data.data})
       setLoading(false)
     } catch (error) {
       const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
@@ -39,80 +42,78 @@ const Order = () => {
 
   }
 
+  const products = [
+    {
+      title: 'Product',
+      dataIndex: 'productType',
+      key: 'id',
+      render: (_, record) => (
+        <div className='flex flex-col'>
+          <h2 className='text-zinc-600'>{record.productType}</h2>
+          <div>Color: <span className='text-zinc-600 font-bold'>{record.productColor}</span></div>
+          <div>Fabric: <span className='text-zinc-600 font-bold'>{record.productFabric}</span></div>
+        </div>
+      )
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'id',
+    },
+    {
+      title: 'Unit Count',
+      dataIndex: 'unit',
+      key: 'id',
+    }
+  ];
+
   return (
-    <Row gutter={[12, 0]}>
-      <Col xs={24} md={16}>
-        <Row gutter={[12, 12]}>
-          <Col xs={24} md={24}>
-            <Card className='shadow' title="Customer Information" headStyle={{backgroundColor:colors.primary, color:"white", fontWeight:"Bold"}}>
-              {order.customer ? <Descriptions size='small' labelStyle={{ color: "#3C4048", fontWeight: "bold" }}>
-                <Descriptions.Item label="Name">{order.customer.name}</Descriptions.Item>
+    <>
+      {order.id ? <OrderHeader orderId={order.id} status={order.status} createdAt={order.createdAt}/> : <Skeleton paragraph={{rows: 2}}/>}
+      <Row gutter={[12, 0]}>
+        <Col xs={24} md={16}>
+          <Row gutter={[12, 12]}>
+            <Col xs={24} md={24}>
+              {order.products ?<Table columns={products} rowKey="id" dataSource={order.products} pagination={false}/> : <Skeleton paragraph={{rows: 3}}/>}
+            </Col>
+            <Col xs={24} md={24}>
+              <Card  title="Payment Summary">
+                {order.payment ?
+                  <PaymentSummary payment={order.payment}/> : <Skeleton paragraph={{rows: 3}}/>}
+              </Card>
+            </Col>
+          </Row>
 
-                <Descriptions.Item label="Facebook ID">{order.customer.facebook_id}</Descriptions.Item>
-                <Descriptions.Item label="Address">
-                  {`${order.customer.address.address}, ${order.customer.address.district}, ${order.customer.address.division}`}
-                </Descriptions.Item>
-                <Descriptions.Item label="Phone">{order.customer.address.phone}</Descriptions.Item>
-                <Descriptions.Item label="Alternate Phone">{order.customer.alt_phone}</Descriptions.Item>
+        </Col>
 
-              </Descriptions> : <Skeleton paragraph={{ rows: 3 }} />}
+        <Col xs={24} md={8}>
+          <Row gutter={[12, 12]}>
+            <Col xs={24} md={24}>
+              <Card  title="Customer">
+                {order.customer? <CustomerInfo customer={order.customer} /> :<Skeleton paragraph={{rows: 3}}/>}
+              </Card>
+            </Col>
+            <Col xs={24} md={24}>
+              <Card className='shadow' title="Images" style={{overflow: "auto"}}>
+                {order.images && order.images.length ? <Row gutter={[16, 16]}>
+                    {order.images.map(item => {
+                      return <Col key={item.id}>
+                        <Image
+                          width={100}
+                          height={100}
+                          src={`${process.env.REACT_APP_API_BASE_URL}/files/upload/${item.id}`}/>
+                      </Col>
+                    })}
+                  </Row> : <Empty description={"No image found."}/>}
+              </Card>
+            </Col>
+          </Row>
 
-            </Card>
-          </Col>
-          <Col xs={24} md={24}>
-            <Card className='shadow' title="Product Information" headStyle={{backgroundColor:colors.primary, color:"white", fontWeight:"Bold"}}>
-              <Space direction="vertical" style={{ display: 'flex' }}>
-                {order && order.product ? order.product.map((item, index) => {
-                  return <Descriptions labelStyle={{ color: "#3C4048", fontWeight: "bold" }} bordered size='small' style={{width:"100%"}} key={index}>
-                    <Descriptions.Item label={"Product - " + (index + 1)}>{item.type_id}</Descriptions.Item>
-                    <Descriptions.Item label="Color">{item.color_id}</Descriptions.Item>
-                    <Descriptions.Item label="Fabric">{item.fabric_id}</Descriptions.Item>
-                    <Descriptions.Item label="Description">{item.description}</Descriptions.Item>
-
-                  </Descriptions>
-
-                }) : <Skeleton paragraph={{ rows: 3 }} />}
-              </Space>
-            </Card>
-          </Col>
-          <Col xs={24} md={24}>
-            <Card className='shadow' title="Delivery Information" headStyle={{backgroundColor:colors.primary, color:"white", fontWeight:"Bold"}}>
-              {order && order.image ? <Descriptions  labelStyle={{ color: "#3C4048", fontWeight: "bold" }} bordered size='small'>
-                <Descriptions.Item label="Delivery Channel">{order.delivery_channel}</Descriptions.Item>
-                <Descriptions.Item label="Delivery Date">{order.delivery_date}</Descriptions.Item>
-                <Descriptions.Item label="Delivery Charge">{order.delivery_charge}</Descriptions.Item>
-                <Descriptions.Item label="Total Amount">{order.total_amount + " tk"}</Descriptions.Item>
-              </Descriptions> : <Skeleton paragraph={{ rows: 3 }} />}
-
-            </Card>
-          </Col>
-        </Row>
-
-      </Col>
-
-      <Col xs={24} md={8}>
-        <Card className='shadow' title="Images" style={{ overflow: "auto" }} headStyle={{backgroundColor:colors.primary, color:"white", fontWeight:"Bold"}}>
-          {order.image && order.image.length ? <Row gutter={[16, 16]}>
-              {order.image.map(item => {
-                return <Col key={item.id}>
-                  <Image
-                    width={100}
-                    height={100}
-                    src={`${process.env.REACT_APP_API_BASE_URL}/files/upload/${item.id}`}
-                  />
-                </Col>
-              })}
-            </Row>
-
-            : <Empty description={"No image found."} />}
-
-        </Card>
-      </Col>
+        </Col>
 
 
-
-
-    </Row>
+      </Row>
+    </>
 
 
   )

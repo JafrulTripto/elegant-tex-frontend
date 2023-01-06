@@ -33,7 +33,7 @@ function MerchantForm() {
         name: 'merchantImage',
         accept: "image/*",
         multiple: false,
-        action: `${process.env.REACT_APP_BASE_URL}/files/uploadMerchantImage`,
+        action: `${process.env.REACT_APP_API_BASE_URL}/files/uploadMerchantImage`,
         maxCount: 1,
         onChange(info) {
             const { status } = info.file;
@@ -55,13 +55,13 @@ function MerchantForm() {
 
     const getDivisions = async () => {
         setDivisionLoading(true);
-        const divisions = await axiosClient.get(`${process.env.REACT_APP_BASE_URL}/getDivisions`);
+        const divisions = await axiosClient.get(`/getDivisions`);
         return divisions.data;
     }
     const getDistricts = async (id) => {
         setDistrictLoading(true);
 
-        const districts = await axiosClient.get(`${process.env.REACT_APP_BASE_URL}/getDistrictsByDivision?divisionId=${id}`);
+        const districts = await axiosClient.get(`/getDistrictsByDivision?divisionId=${id}`);
         return districts.data;
     }
 
@@ -91,14 +91,14 @@ function MerchantForm() {
         try {
             setLoading(true);
             let merchantData = { ...data, image: { ...imageData } }
-            const response = await axiosClient.post(`${process.env.REACT_APP_BASE_URL}/merchants/store`, merchantData);
+            const response = await axiosClient.post(`/merchants/store`, merchantData);
             setLoading(false);
             toast.success(response.data.message);
             navigate("/Merchants");
         } catch (error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
             toast.error(message);
-
+            setLoading(false);
         }
 
     }
