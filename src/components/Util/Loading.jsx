@@ -14,7 +14,6 @@ const Loading = (props) => {
     }
     return "100vh";
   }
-  console.log(props)
   return (
     <>
       <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: calculateHeight(), flexDirection: "column"}}>

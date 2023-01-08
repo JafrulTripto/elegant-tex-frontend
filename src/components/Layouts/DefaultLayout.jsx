@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Navigate, NavLink, Outlet, useNavigate} from "react-router-dom";
+import {Navigate, Outlet, useNavigate, useLocation} from "react-router-dom";
 import {useStateContext} from "../../contexts/ContextProvider.jsx";
 import {Button, Col, Layout, Menu, Modal, Row, theme} from "antd";
 import {
@@ -17,9 +17,14 @@ const {Header, Sider, Content} = Layout;
 
 const DefaultLayout = () => {
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const route = location.pathname.split('/');
+
   const [collapsed, setCollapsed] = useState(false);
   const [navbarWidth, setNavbarWidth] = useState("");
   const [navbarLeft, setNavbarLeft] = useState("");
+
   const {
     token: {colorBgContainer},
   } = theme.useToken();
@@ -42,7 +47,8 @@ const DefaultLayout = () => {
     }
   ];
 
-  const navigate = useNavigate();
+
+
 
   const [loading, setLoading] = useState(false);
 
@@ -141,7 +147,7 @@ const DefaultLayout = () => {
       <Menu
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={['dashboard']}
+        defaultSelectedKeys={route[1] === '' ? 'dashboard' : route[1]}
         items={routes}
         onClick={(item) => navigate("/" + item.key)}
       />

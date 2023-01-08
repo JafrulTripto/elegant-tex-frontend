@@ -87,7 +87,6 @@ function MerchantForm() {
     }
 
     const onFinish = async (data) => {
-        console.log(data);
         try {
             setLoading(true);
             let merchantData = { ...data, image: { ...imageData } }

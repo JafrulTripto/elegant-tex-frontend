@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Space, Card, Row, Col, Button, Input, Table, Tag, Tabs} from 'antd';
+import {Space, Card, Row, Col, Button, Input, Table, Tag, Tabs, Switch, Select, Modal} from 'antd';
 
 import {NavLink, useNavigate} from "react-router-dom";
 
@@ -11,6 +11,7 @@ import {useStateContext} from "../contexts/ContextProvider.jsx";
 import axiosClient from "../axios-client.js";
 import Permission from "../components/Util/Permission.jsx";
 import {OrderTypeEnum} from "../utils/enums/OrderTypeEnum.js";
+import {OrderStatusEnum} from "../utils/enums/OrderStatusEnum";
 
 
 function Sales() {
@@ -20,11 +21,15 @@ function Sales() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const [statusLoading, setStatusLoading] = useState(false);
   const [orders, setOrders] = useState([]);
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [orderType, setOrderType] = useState('Marketplace');
+  const [orderStatus, setOrderStatus] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [orderId, setOrderId] = useState(null);
 
   const handleNewOrder = (orderType) => {
     navigate('/orders/orderForm', {state: {orderType}})
@@ -55,7 +60,6 @@ function Sales() {
       const ordersData = orders.data.data.map((data) => {
         return {...data, key: data.id}
       })
-      console.log(ordersData)
       setOrders(ordersData);
       setTotal(orders.data.meta.total)
     } catch (error) {
@@ -115,6 +119,48 @@ function Sales() {
     setOrderType(orderType);
     fetchOrders(1, orderType);
   }
+  const showModal = (data, id) => {
+    setOrderStatus(data);
+    setIsModalOpen(true);
+    setOrderId(id);
+  };
+  const handleOk = () => {
+    const postData = {
+      orderId,
+      orderStatus
+    }
+    setStatusLoading(true);
+    axiosClient.post('/orders/changeOrderStatus', postData).then((response) => {
+      const order = response.data.data;
+      const target = orders.find((obj) => obj.id === order.id);
+      Object.assign(target, order);
+      setOrderStatus(null);
+      setStatusLoading(false)
+      setIsModalOpen(false);
+      toast.success("Succesfully changed order status to " + response.data.data.status);
+
+    }).catch((error) => {
+      const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+      toast.error(message);
+      setStatusLoading(false)
+    })
+
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  }
+  const handleStatusChange = (status) => {
+    setOrderStatus(status);
+  }
+
+  const generateTagColorFromStatus = (status) => {
+    let obj = OrderStatusEnum.find(o => o.label === status);
+    return obj.color;
+  }
+
+  const renderStatus = (data, record, index) => {
+    return <Tag color={generateTagColorFromStatus(data)} style={{cursor:"pointer"}} onClick={()=> showModal(data, record.id)}>{data}</Tag>
+  }
 
 
   const columns = [
@@ -133,7 +179,7 @@ function Sales() {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (data) => <Tag color="red">{data}</Tag>
+      render: renderStatus
     },
     {
       title: 'Created By',
@@ -212,6 +258,7 @@ function Sales() {
   ];
 
 
+
   return (
     <Space
       direction="vertical"
@@ -239,9 +286,15 @@ function Sales() {
           </Col>
         </Row>
       </Card>
-      <Tabs defaultActiveKey="1" onChange={onTabChange} items={tabItems}>
-
-      </Tabs>
+      <Tabs defaultActiveKey="1" onChange={onTabChange} items={tabItems}></Tabs>
+      <Modal title="Status" confirmLoading={statusLoading} width={400} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <Select
+          defaultValue={orderStatus}
+          style={{ width: "100%" }}
+          onChange={handleStatusChange}
+          options={OrderStatusEnum}
+        />
+      </Modal>
     </Space>
   )
 }

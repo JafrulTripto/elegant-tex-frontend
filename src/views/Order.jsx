@@ -23,7 +23,6 @@ const Order = () => {
 
   useEffect(() => {
     fetchOrders();
-    console.log(order)
   }, [])
 
   const fetchOrders = async () => {
@@ -31,7 +30,6 @@ const Order = () => {
     setLoading(true);
     try {
       const order = await axiosClient.get(`/orders/getOrder/${id}`);
-      console.log(order)
       setOrder({...order.data.data})
       setLoading(false)
     } catch (error) {
