@@ -64,6 +64,7 @@ const OrderFrom = () => {
     name: "orderImage",
     accept: "image/*",
     multiple: true,
+    listType:"picture",
     action: `${process.env.REACT_APP_API_BASE_URL}/files/uploadProductImage`,
     maxCount: 5,
     onChange(info) {
@@ -441,127 +442,130 @@ const OrderFrom = () => {
         </Row>
 
         <Divider style={{color: colors.primary}}>Product Info</Divider>
-        <Form.List name="products" initialValue={[{
-          productType: null,
-          productColor: null,
-          productFabric: null,
-          productDescription: null
-        }]}>
-          {(fields, {add, remove}) => (
-            <>
-              {fields.map(({key, name, ...restField}) => (
 
-                <Row gutter={24} key={key}>
-                  <Col xs={24} md={12} lg={5}>
-                    <Form.Item
-
-                      name={[name, 'productType']}
-                      label="Product Type"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please select product type!',
-                        },
-
-                      ]}>
-                      <Select loading={productTypeLoading} onFocus={onProductTypeFocus}>
-                        {productTypes.map(data => {
-                          return <Option value={data.id} key={data.id}>{data.name}</Option>
-                        })}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12} lg={5}>
-                    <Form.Item
-                      name={[name, 'productColor']}
-                      label="Product Color"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please select product color!',
-                        },
-
-                      ]}>
-                      <Select loading={productColorsLoading} onFocus={onProductColorFocus}>
-                        {productColors.map(data => {
-                          return <Option value={data.id} key={data.id}>{data.name}</Option>
-                        })}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12} lg={5}>
-                    <Form.Item
-                      name={[name, 'productFabric']}
-                      label="Product Fabric"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please select product fabric!',
-                        },
-
-                      ]}>
-                      <Select loading={productFabricLoading} onFocus={onProductFabricsFocus}>
-                        {productFabrics.map(data => {
-                          return <Option value={data.id} key={data.id}>{data.name}</Option>
-                        })}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12} lg={5}>
-                    <Form.Item
-                      name={[name, 'productDescription']}
-                      label="Product description"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please input product description!',
-                        },
-                      ]}
-                    >
-                      <Input.TextArea rows={1} placeholder="Additional product information ..."/>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12} lg={4}>
-                    <Form.Item
-                      name={[name, "count"]}
-                      label="Count"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please enter product count!',
-                        },
-
-                      ]}>
-                      <InputNumber
-                        min={1}
-                        style={{width: "100%"}}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>))}
-
-              <Row gutter={[16, 16]}>
-                <Col xs={24} md={12} lg={12}>
-                  <Form.Item>
-                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined/>}>
-                      Add Another Product
-                    </Button>
-
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12} lg={12}>
-                  <Form.Item>
-                    <Button type="dashed" danger onClick={() => fields.length > 1 ? remove(fields.length - 1) : null}
-                            disabled={fields.length <= 1} block icon={<MinusOutlined/>}>
-                      Remove Last Product
-                    </Button>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </>)}
-        </Form.List>
         <Row>
-          <Col xs={24} md={24} lg={24}>
+          <Col xs={24} md={12} lg={16} className="pr-4">
+            <Form.List name="products" initialValue={[{
+              productType: null,
+              productColor: null,
+              productFabric: null,
+              productDescription: null
+            }]}>
+              {(fields, {add, remove}) => (
+                <>
+                  {fields.map(({key, name, ...restField}) => (
+
+                    <Row gutter={24} key={key}>
+                      <Col xs={24} md={12} lg={6}>
+                        <Form.Item
+
+                          name={[name, 'productType']}
+                          label="Product Type"
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Please select product type!',
+                            },
+
+                          ]}>
+                          <Select loading={productTypeLoading} onFocus={onProductTypeFocus}>
+                            {productTypes.map(data => {
+                              return <Option value={data.id} key={data.id}>{data.name}</Option>
+                            })}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12} lg={6}>
+                        <Form.Item
+                          name={[name, 'productColor']}
+                          label="Product Color"
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Please select product color!',
+                            },
+
+                          ]}>
+                          <Select loading={productColorsLoading} onFocus={onProductColorFocus}>
+                            {productColors.map(data => {
+                              return <Option value={data.id} key={data.id}>{data.name}</Option>
+                            })}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12} lg={6}>
+                        <Form.Item
+                          name={[name, 'productFabric']}
+                          label="Product Fabric"
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Please select product fabric!',
+                            },
+
+                          ]}>
+                          <Select loading={productFabricLoading} onFocus={onProductFabricsFocus}>
+                            {productFabrics.map(data => {
+                              return <Option value={data.id} key={data.id}>{data.name}</Option>
+                            })}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12} lg={6}>
+                        <Form.Item
+                          name={[name, "count"]}
+                          label="Count"
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Please enter product count!',
+                            },
+
+                          ]}>
+                          <InputNumber
+                            min={1}
+                            style={{width: "100%"}}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={24} lg={24}>
+                        <Form.Item
+                          name={[name, 'productDescription']}
+                          label="Product description"
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Please input product description!',
+                            },
+                          ]}
+                        >
+                          <Input.TextArea rows={2} placeholder="Additional product information ..."/>
+                        </Form.Item>
+                      </Col>
+                    </Row>))}
+
+                  <Row gutter={[16, 16]}>
+                    <Col xs={24} md={12} lg={12}>
+                      <Form.Item>
+                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined/>}>
+                          Add Another Product
+                        </Button>
+
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12} lg={12}>
+                      <Form.Item>
+                        <Button type="dashed" danger onClick={() => fields.length > 1 ? remove(fields.length - 1) : null}
+                                disabled={fields.length <= 1} block icon={<MinusOutlined/>}>
+                          Remove Last Product
+                        </Button>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </>)}
+            </Form.List>
+          </Col>
+          <Col xs={24} md={12} lg={8} className="pt-8">
             <Form.Item>
               <Dragger {...draggerProps}>
                 <p className="ant-upload-drag-icon">
