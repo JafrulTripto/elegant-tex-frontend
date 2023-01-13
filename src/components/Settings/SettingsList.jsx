@@ -1,9 +1,11 @@
 import React from 'react';
-import {Card, List} from "antd";
+import {Card, Col, List, Row} from "antd";
 import {FlagOutlined, UnlockOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 import {colors} from "../../utils/Colors.js";
-import {NavLink} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import Permission from "../Util/Permission";
+import {faAnchorLock} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const SettingsList = () => {
 
@@ -15,54 +17,60 @@ const SettingsList = () => {
   const data = [
     {
       title: 'Role Settings',
-      icon: <UsergroupAddOutlined style={iconStyle} />,
+      icon: <UsergroupAddOutlined style={iconStyle}/>,
       link: "/settings/roleSettings",
       description: "Manage the application roles.User can have multiple roles.",
-      permission:null
+      permission: null
     },
     {
       title: 'Permission Settings',
-      icon: <UnlockOutlined style={iconStyle} />,
+      icon: <UnlockOutlined style={iconStyle}/>,
       link: "/settings/permissionSettings",
-      description: "Manage the application permissions. Permissions set is a collection of settings that give users access to various functions on a page. Permission set may be granted to any number of roles.",
-      permission:null
+      description: "Manage the application permissions.",
+      permission: 'PERMISSION:VIEW'
     },
     {
       title: 'Marketplace Settings',
-      icon: <FlagOutlined style={iconStyle} />,
+      icon: <FlagOutlined style={iconStyle}/>,
       link: "/settings/marketplaceSettings",
       description: "Create and manage the business pages as you need. These business pages will need in order creation.",
-      permission:null
+      permission: null
     },
     {
       title: 'Product Settings',
-      icon: <FlagOutlined style={iconStyle} />,
+      icon: <FlagOutlined style={iconStyle}/>,
       link: "/settings/productSettings",
       description: "Create and manage the business pages as you need. These business pages will need in order creation.",
-      permission:null
+      permission: null
     },
   ];
   return (
-    <Card title="Settings" bordered={false} className="shadow">
-      <List
-        grid={{ gutter: 16, column: 2 }}
-        itemLayout="horizontal"
-        dataSource={data}
-        renderItem={(item) => (
-          <Permission required={item.permission}>
-            <List.Item>
-              <List.Item.Meta
-                avatar={item.icon}
-                title={<NavLink to={item.link}>{item.title}</NavLink>}
-                description={item.description}
-              />
-            </List.Item>
-          </Permission>
+    <Row gutter={[16, 16]}>
+      {data.map((item) => {
+        return <Permission required={item.permission} key={item.title}>
+          <Col xs={24} md={12} lg={12}>
+            <div className="rounded overflow-hidden">
+              <div className="px-6 py-4">
+                <div className="flex">
+                  <div className="pr-2 pt-1">{item.icon}</div>
+                  <div className="font-medium text-lg mb-2"><Link to={item.link}>{item.title}</Link></div>
+                </div>
 
-        )}
-      />
+                <span className="text-gray-700 text-base pl-7" style={{
+                  whiteSpace: "normal",
+                  overflow: "hidden !important",
+                  textOverflow: 'ellipsis !important',
+                  display: "inline-block"
+                }}>
+                  {item.description}
+                </span>
+              </div>
+            </div>
+          </Col>
+        </Permission>
+      })}
+    </Row>
 
-    </Card>
 
   )
 };

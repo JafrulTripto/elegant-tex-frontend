@@ -50,9 +50,11 @@ const OrderFrom = () => {
 
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
+  const [upazilas, setUpazilas] = useState([]);
 
   const [divisionLoading, setDivisionLoading] = useState(false);
   const [districtLoading, setDistrictLoading] = useState(false);
+  const [upazilaLoading, setUpazilaLoading] = useState(false);
 
   const [uploaded, setUploaded] = useState(false);
   const [files, setFiles] = useState([]);
@@ -135,7 +137,13 @@ const OrderFrom = () => {
   const getDistricts = async (id) => {
     setDistrictLoading(true);
 
-    const districts = await axiosClient.get(`/getDistrictsByDivision?divisionId=${id}`);
+    const upazilas = await axiosClient.get(`/getDistrictsByDivision?divisionId=${id}`);
+    return upazilas.data;
+  }
+  const getUpazilas = async (id) => {
+    setUpazilaLoading(true);
+
+    const districts = await axiosClient.get(`/getUpazilasByDistrict?districtId=${id}`);
     return districts.data;
   }
 
@@ -157,6 +165,14 @@ const OrderFrom = () => {
       const districtsData = await getDistricts(value)
       setDistricts(districtsData);
       setDistrictLoading(false);
+    } catch (error) {
+    }
+  }
+  const onDistrictSelect = async (value) => {
+    try {
+      const districtsData = await getUpazilas(value)
+      setUpazilas(districtsData);
+      setUpazilaLoading(false);
     } catch (error) {
     }
   }
@@ -367,7 +383,7 @@ const OrderFrom = () => {
             <Input.TextArea placeholder="House, road, area...." rows={1}/>
           </Form.Item>
         </Col>
-        <Col xs={24} md={12} lg={6}>
+        <Col xs={24} md={12} lg={4}>
           <Form.Item
             name="division"
             label="Division"
@@ -386,7 +402,7 @@ const OrderFrom = () => {
             </Select>
           </Form.Item>
         </Col>
-        <Col xs={24} md={12} lg={6}>
+        <Col xs={24} md={12} lg={4}>
           <Form.Item
             name="district"
             label="District"
@@ -397,8 +413,27 @@ const OrderFrom = () => {
               },
 
             ]}>
-            <Select loading={districtLoading}>
+            <Select loading={districtLoading} onSelect={onDistrictSelect}>
               {districts.map(data => {
+                return <Option value={data.id} key={data.id}>{data.name}</Option>
+              })}
+
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col xs={24} md={12} lg={4}>
+          <Form.Item
+            name="upazila"
+            label="Upazila / Thana"
+            rules={[
+              {
+                required: true,
+                message: 'Please select district!',
+              },
+
+            ]}>
+            <Select loading={upazilaLoading}>
+              {upazilas.map(data => {
                 return <Option value={data.id} key={data.id}>{data.name}</Option>
               })}
 

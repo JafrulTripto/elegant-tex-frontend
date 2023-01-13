@@ -119,7 +119,7 @@ const Users = () => {
       title: 'Address',
       dataIndex: 'address',
       key: 'address',
-      render: (address) => `${address.address} ,${address.district}, ${address.division}`
+      render: (address) => `${address.address}, ${address.upazila} ,${address.district}`
     },
     {
       title: 'Action',

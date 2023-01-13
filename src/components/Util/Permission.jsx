@@ -6,6 +6,7 @@ const Permission = (props) => {
 
   const { permissions } = useStateContext();
 
+  console.log(permissions)
   const checkPermissions = () => {
     if (permissions) {
       if (permissions.indexOf(props.required) > -1) {

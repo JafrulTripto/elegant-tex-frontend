@@ -2,8 +2,13 @@ import React from 'react';
 import {Tag} from "antd";
 import {CalendarOutlined} from "@ant-design/icons";
 import moment from "moment/moment";
+import {OrderStatusEnum} from "../../utils/enums/OrderStatusEnum";
 
 const OrderHeader = ({orderId, createdAt, status}) => {
+  const generateTagColorFromStatus = (status) => {
+    let obj = OrderStatusEnum.find(o => o.label === status);
+    return obj.color;
+  }
   return (
     <div className="mb-3">
       <div className="flex items-center">
@@ -11,7 +16,7 @@ const OrderHeader = ({orderId, createdAt, status}) => {
           Order #{orderId}
         </h3>
         <div className="mb-3 pl-5 font-bold">
-          <Tag color="red">{status}</Tag>
+          <Tag color={generateTagColorFromStatus(status)}>{status}</Tag>
         </div>
       </div>
       <CalendarOutlined className="text-zinc-500 pr-1"/>

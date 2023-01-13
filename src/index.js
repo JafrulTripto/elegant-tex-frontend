@@ -18,7 +18,8 @@ root.render(
       theme={{
         token: {
           colorPrimary: '#00b96b',
-          colorLink:colors.primary
+          colorLink:colors.primary,
+          colorLinkHover:colors.primaryLight
         },
       }}>
       <ToastContainer

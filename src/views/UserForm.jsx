@@ -12,10 +12,12 @@ const UserForm = () => {
 
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
+  const [upazilas, setUpazilas] = useState([]);
 
 
   const [divisionLoading, setDivisionLoading] = useState(false);
   const [districtLoading, setDistrictLoading] = useState(false);
+  const [upazilaLoading, setUpazilaLoading] = useState(false);
 
 
   const [uploaded, setUploaded] = useState(false);
@@ -59,6 +61,21 @@ const UserForm = () => {
 
     const districts = await axiosClient.get(`/getDistrictsByDivision?divisionId=${id}`);
     return districts.data;
+  }
+  const getUpazilas = async (id) => {
+    setUpazilaLoading(true);
+
+    const districts = await axiosClient.get(`/getUpazilasByDistrict?districtId=${id}`);
+    return districts.data;
+  }
+
+  const onDistrictSelect = async (value) => {
+    try {
+      const districtsData = await getUpazilas(value)
+      setUpazilas(districtsData);
+      setUpazilaLoading(false);
+    } catch (error) {
+    }
   }
 
   const onDivisionFocus = async () => {
@@ -216,7 +233,7 @@ const UserForm = () => {
           </Col>
 
 
-          <Col xs={24} md={12} lg={6}>
+          <Col xs={24} md={12} lg={4}>
             <Form.Item
               name="division"
               label="Division"
@@ -235,7 +252,7 @@ const UserForm = () => {
               </Select>
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={6}>
+          <Col xs={24} md={12} lg={4}>
             <Form.Item
               name="district"
               label="District"
@@ -246,8 +263,27 @@ const UserForm = () => {
                 },
 
               ]}>
-              <Select loading={districtLoading}>
+              <Select loading={districtLoading} onSelect={onDistrictSelect}>
                 {districts.map(data => {
+                  return <Option value={data.id} key={data.id}>{data.name}</Option>
+                })}
+
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={4}>
+            <Form.Item
+              name="upazila"
+              label="Upazila/Thana"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please select upazila/thana!',
+                },
+
+              ]}>
+              <Select loading={upazilaLoading}>
+                {upazilas.map(data => {
                   return <Option value={data.id} key={data.id}>{data.name}</Option>
                 })}
 

@@ -11,6 +11,8 @@ import {toast} from "react-toastify";
 import {ElegantTexIcon} from "../../utils/icons/ElegantTexIcon";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCoffee} from "@fortawesome/free-solid-svg-icons";
+import NavigationDropdown from "../NavigationDropdown";
+import BreadCrumb from "../BreadCrumb";
 
 
 const {Header, Sider, Content} = Layout;
@@ -139,6 +141,7 @@ const DefaultLayout = () => {
       collapsible
       breakpoint={'sm'}
       width={250}
+      collapsedWidth={70}
       onBreakpoint={onBreakpointHandler}
       collapsed={collapsed}>
       <div style={{padding: "5px", display: "flex"}}>
@@ -162,21 +165,20 @@ const DefaultLayout = () => {
           background: colorBgContainer,
           transition: "350ms"
         }}>
-        <div style={{display: "flex", justifyContent: "space-between"}}>
+        <div className="flex justify-between">
           <div>
             {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
               className: 'trigger', onClick: sidebarCollapseToggle,
             })}
           </div>
-          <Row gutter={[16, 0]}>
-            <Col>{user.name}</Col>
-            <Col><Button type="link" onClick={handleLogout}>Logout</Button></Col>
-          </Row>
+          {user.image ? <NavigationDropdown handleLogout={handleLogout}/>: null}
         </div>
       </Header>
+      <BreadCrumb/>
       <Content
+        className="sm:px-1 md:px-5 lg:px-5 mx-2 py-5"
         style={{
-          margin: '64px 16px 16px 16px', padding: 15, minHeight: 280, background: "#f5f5f5",
+          minHeight: 280, background: "#f5f5f5",
         }}>
         {user && Object.keys(user).length !== 0 ? <Outlet/> : <Loading layout='default'/>}
       </Content>

@@ -31,6 +31,7 @@ const Order = () => {
     try {
       const order = await axiosClient.get(`/orders/getOrder/${id}`);
       setOrder({...order.data.data})
+      console.log(order.data.data)
       setLoading(false)
     } catch (error) {
       const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
