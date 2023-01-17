@@ -9,6 +9,7 @@ import {useStateContext} from "../contexts/ContextProvider.jsx";
 import {toast} from "react-toastify";
 import {OrderTypeEnum} from "../utils/enums/OrderTypeEnum.js";
 import {colors} from "../utils/Colors.js";
+import {useDeliveryChannels} from "../hooks/useDeliveryChannels";
 
 
 const OrderFrom = () => {
@@ -30,7 +31,7 @@ const OrderFrom = () => {
   const {Dragger} = Upload;
 
   const {user} = useStateContext();
-
+  const {deliveryChannels} = useDeliveryChannels();
   const {orderType} = state;
 
   const [merchantsLoading, setMerchantsLoading] = useState(false);
@@ -47,6 +48,7 @@ const OrderFrom = () => {
 
   const [productFabrics, setProductFabrics] = useState([]);
   const [productFabricLoading, setProductFabricsLoading] = useState(false);
+
 
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -626,9 +628,9 @@ const OrderFrom = () => {
 
               ]}>
               <Select>
-                <Option value="1" key="1">Shundorbon Currier Service</Option>
-                <Option value="2" key="2">Redex</Option>
-                <Option value="3" key="3">ET Secure Service</Option>
+                {deliveryChannels.map(data => {
+                  return <Option value={data.name} key={data.id}>{data.name}</Option>
+                })}
               </Select>
             </Form.Item>
           </Col>

@@ -64,17 +64,32 @@ const Order = () => {
     }
   ];
 
+  const renderCustomerInfo = () => {
+    if (order.customer) {
+      return <Col xs={24} md={24}>
+        <Card title="Customer">
+          <CustomerInfo customer={order.customer}/>
+        </Card>
+      </Col>
+    } else if (loading) {
+      return <Skeleton paragraph={{rows: 3}}/>
+    }
+    return null;
+  }
+
   return (
     <>
-      {order.id ? <OrderHeader orderId={order.id} status={order.status} createdAt={order.createdAt}/> : <Skeleton paragraph={{rows: 2}}/>}
+      {order.id ? <OrderHeader orderable={order.orderable} orderId={order.id} status={order.status}
+                               createdAt={order.createdAt}/> : <Skeleton paragraph={{rows: 2}}/>}
       <Row gutter={[12, 0]}>
         <Col xs={24} md={16}>
           <Row gutter={[12, 12]}>
             <Col xs={24} md={24}>
-              {order.products ?<Table columns={products} rowKey="id" dataSource={order.products} pagination={false}/> : <Skeleton paragraph={{rows: 3}}/>}
+              {order.products ? <Table columns={products} rowKey="id" dataSource={order.products} pagination={false}/> :
+                <Skeleton paragraph={{rows: 3}}/>}
             </Col>
             <Col xs={24} md={24}>
-              <Card  title="Payment Summary">
+              <Card title="Payment Summary">
                 {order.payment ?
                   <PaymentSummary payment={order.payment}/> : <Skeleton paragraph={{rows: 3}}/>}
               </Card>
@@ -85,23 +100,19 @@ const Order = () => {
 
         <Col xs={24} md={8}>
           <Row gutter={[12, 12]}>
-            <Col xs={24} md={24}>
-              <Card  title="Customer">
-                {order.customer? <CustomerInfo customer={order.customer} /> :<Skeleton paragraph={{rows: 3}}/>}
-              </Card>
-            </Col>
+            {renderCustomerInfo()}
             <Col xs={24} md={24}>
               <Card className='shadow' title="Images" style={{overflow: "auto"}}>
                 {order.images && order.images.length ? <Row gutter={[16, 16]}>
-                    {order.images.map(item => {
-                      return <Col key={item.id}>
-                        <Image
-                          width={100}
-                          height={100}
-                          src={`${process.env.REACT_APP_API_BASE_URL}/files/upload/${item.id}`}/>
-                      </Col>
-                    })}
-                  </Row> : <Empty description={"No image found."}/>}
+                  {order.images.map(item => {
+                    return <Col key={item.id}>
+                      <Image
+                        width={100}
+                        height={100}
+                        src={`${process.env.REACT_APP_API_BASE_URL}/files/upload/${item.id}`}/>
+                    </Col>
+                  })}
+                </Row> : <Empty description={"No image found."}/>}
               </Card>
             </Col>
           </Row>

@@ -24,7 +24,6 @@ const ProductSettingsForm = (props) => {
       handleClose()
       form.resetFields();
       element.fetchFunc();
-      //getRoles();
     } catch (error) {
       toast.error(error.response.statusText);
     }

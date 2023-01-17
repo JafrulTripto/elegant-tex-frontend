@@ -20,6 +20,7 @@ root.render(
           colorPrimary: colors.primary,
           colorLink:colors.primary,
           colorLinkHover:colors.primaryLight,
+          colorLinkActive:colors.primaryLight
         },
       }}>
       <ToastContainer

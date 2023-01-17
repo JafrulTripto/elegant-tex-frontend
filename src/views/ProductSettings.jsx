@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Col, List, Modal, Row, Space, Typography} from "antd";
+import {Button, Card, Col, List, Modal, Row, Space, Table, Typography} from "antd";
 import axiosClient from "../axios-client.js";
 import {toast} from "react-toastify";
 import {PlusOutlined} from "@ant-design/icons";
 import ProductSettingsForm from "../components/Settings/ProductSettings/ProductSettingsFrom";
 import {colors} from "../utils/Colors.js";
+import {useDeliveryChannels} from "../hooks/useDeliveryChannels";
 
 const productSettingsLists = [
   {
@@ -24,8 +25,34 @@ const productSettingsLists = [
     element: 'Product Type',
     data: [],
     isDataLoading: false
+  },
+  {
+    key: 'deliveryChannel',
+    element: 'Delivery Channel',
+    data: [],
+    isDataLoading: false
   }
 ]
+
+const columns = [
+  {
+    title: 'Name',
+    key:'name',
+    dataIndex: 'name',
+    width: "75%"
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    width: "25%",
+    render: (_, record) => (
+      <Space size="middle">
+        <a>Edit</a>
+        <a>Delete</a>
+      </Space>
+    ),
+  },
+];
 
 const ProductSettings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,6 +70,7 @@ const ProductSettings = () => {
     getProductColors();
     getProductFabrics();
     getProductTypes();
+    getDeliveryChannels();
     return () => {
 
     }
@@ -119,6 +147,24 @@ const ProductSettings = () => {
     }
 
   }
+  const getDeliveryChannels = async () => {
+
+    let newState = [...productSettingsListsData]
+    newState[3].isDataLoading = true;
+    try {
+      const response = await axiosClient.get(`/settings/deliveryChannels/index`);
+
+      newState[3].data = response.data.data;
+      newState[3].isDataLoading = false;
+
+      setProductSettingsListsData(newState)
+    } catch (error) {
+      toast.error(error.response.data.message);
+      newState[3].isDataLoading = false;
+      setProductSettingsListsData(newState);
+    }
+
+  }
 
 
   const handleCancel = () => {
@@ -158,15 +204,25 @@ const ProductSettings = () => {
   }
 
 
-  const rolesListHeader = (productSettingsList) => {
+  const tableHeader = (productSettingsList) => {
 
-    return (<Row>
-      <Col xl={16} md={12} sm={12}><Title type='secondary' level={3}>{productSettingsList.element}</Title></Col>
-      <Col xl={8} md={12} sm={12} type="flex" align="end">
-        <Button type="primary" onClick={() => handleOnClickButton(productSettingsList)}
-                icon={<PlusOutlined/>}>Add {productSettingsList.element}</Button>
-      </Col>
-    </Row>)
+    return (
+      <div className="flex justify-between">
+        <div className="rounded-t mb-0 bg-transparent">
+          <div className="flex flex-wrap items-center">
+            <div className="relative w-full max-w-full flex-grow flex-1">
+              <h6 className="uppercase mb-1 text-xs font-semibold text-blueGray-500">Settings</h6>
+              <h2 className="text-xl mb-0 font-semibold text-blueGray-800">{productSettingsList.element}</h2></div>
+          </div>
+
+        </div>
+        <div>
+          <Button type="primary" onClick={() => handleOnClickButton(productSettingsList)}
+                  icon={<PlusOutlined/>}>Add {productSettingsList.element}
+          </Button>
+        </div>
+      </div>
+    );
   }
 
 
@@ -179,46 +235,15 @@ const ProductSettings = () => {
           display: 'flex',
         }}
       >
-        {/* <AddNewItemLayout buttonText="Add Role" onClickButton={handleOnClickButton} /> */}
         <Row gutter={[12, 12]}>
           {
             productSettingsListsData.map((productSettingsList) => {
 
               return <Col xs={24} md={12} lg={12} key={productSettingsList.key}>
-                <Card className='shadow'>
-                  <List
-                    style={{height: 350}}
-                    header={rolesListHeader(productSettingsList)}
-                    bordered
-                    loading={productSettingsList.isDataLoading}
-                    size={"small"}
-                    dataSource={productSettingsList.data}
-                    renderItem={(item) => (
-                      <List.Item key={item.id}
-                                 onClick={() => assignUserRole(item.name)}
-                                 actions={[
-                                   [
-                                     <Button key="edit" type='link' size='small'
-                                             onClick={() => editRole(item)}>Edit</Button>,
-                                     <Button key="delete" type='text' size='small' danger
-                                             onClick={() => handleDeleteRole(item.id)}>Delete</Button>
-                                   ]
-                                 ]}>
-                        <Button type="link" style={{color: colors.secondary}}>{item.name}</Button>
-                      </List.Item>
-                    )}
-                  />
-                </Card>
+                  <Table loading={productSettingsList.isDataLoading} rowKey={"id"} columns={columns} title={() => tableHeader(productSettingsList)} dataSource={productSettingsList.data} />
               </Col>
             })
           }
-
-          <Col xs={24} md={16} lg={16}>
-
-          </Col>
-          <Col xs={24} md={24} lg={24}>
-
-          </Col>
         </Row>
       </Space>
       <ProductSettingsForm element={productSettingElement} open={isModalOpen} handleClose={handleCancel}/>

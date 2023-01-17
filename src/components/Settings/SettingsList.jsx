@@ -1,11 +1,10 @@
 import React from 'react';
-import {Card, Col, List, Row} from "antd";
+import {Col, Row} from "antd";
 import {FlagOutlined, UnlockOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 import {colors} from "../../utils/Colors.js";
-import {Link, NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 import Permission from "../Util/Permission";
-import {faAnchorLock} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
 
 const SettingsList = () => {
 
@@ -42,7 +41,7 @@ const SettingsList = () => {
       link: "/settings/productSettings",
       description: "Create and manage the business pages as you need. These business pages will need in order creation.",
       permission: null
-    },
+    }
   ];
   return (
     <Row gutter={[16, 16]}>
