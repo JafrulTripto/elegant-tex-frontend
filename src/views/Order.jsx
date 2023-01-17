@@ -2,11 +2,9 @@ import React, {useEffect, useState} from 'react';
 
 import {useParams} from 'react-router-dom';
 import {toast} from 'react-toastify';
-import {Card, Descriptions, Skeleton, Image, Space, Col, Row, Empty, Tag, Table} from 'antd';
+import {Card, Skeleton, Image, Col, Row, Empty, Table} from 'antd';
 import axiosClient from "../axios-client.js";
-import {colors} from "../utils/Colors.js";
-import moment from "moment";
-import {CalendarOutlined} from "@ant-design/icons";
+
 import PaymentSummary from "../components/Order/PaymentSummary";
 import CustomerInfo from "../components/Order/CustomerInfo";
 import OrderHeader from "../components/Order/OrderHeader";
@@ -14,7 +12,7 @@ import OrderHeader from "../components/Order/OrderHeader";
 
 const Order = () => {
 
-  const [Loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState({});
 
 

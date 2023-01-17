@@ -17,9 +17,9 @@ root.render(
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: '#00b96b',
+          colorPrimary: colors.primary,
           colorLink:colors.primary,
-          colorLinkHover:colors.primaryLight
+          colorLinkHover:colors.primaryLight,
         },
       }}>
       <ToastContainer

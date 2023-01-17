@@ -1,18 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {Navigate, Outlet, useNavigate, useLocation} from "react-router-dom";
 import {useStateContext} from "../../contexts/ContextProvider.jsx";
-import {Button, Col, Layout, Menu, Modal, Row, theme} from "antd";
+import { Layout, Menu, Modal, theme} from "antd";
 import {
-  MenuFoldOutlined, MenuUnfoldOutlined, DashboardFilled, ShoppingFilled, UserOutlined, SettingFilled,
+  MenuFoldOutlined, MenuUnfoldOutlined, DashboardFilled, ShoppingFilled, UserOutlined, SettingFilled, ShopOutlined,
 } from '@ant-design/icons';
 import axiosClient from "../../axios-client.js";
 import Loading from "../Util/Loading.jsx";
 import {toast} from "react-toastify";
 import {ElegantTexIcon} from "../../utils/icons/ElegantTexIcon";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCoffee} from "@fortawesome/free-solid-svg-icons";
 import NavigationDropdown from "../NavigationDropdown";
 import BreadCrumb from "../BreadCrumb";
+import {colors} from "../../utils/Colors";
 
 
 const {Header, Sider, Content} = Layout;
@@ -33,19 +32,19 @@ const DefaultLayout = () => {
 
   const routes = [
     {
-      key: 'dashboard', icon: <DashboardFilled/>, label: 'Dashboard',
+      key: 'dashboard', icon: <DashboardFilled style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Dashboard',
     },
     {
-      key: 'merchants', icon: <FontAwesomeIcon icon={faCoffee} />, label: 'Merchants',
+      key: 'merchants', icon: <ShopOutlined style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Merchants',
     },
     {
-      key: 'orders', icon: <ShoppingFilled/>, label: 'Orders',
+      key: 'orders', icon: <ShoppingFilled style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Orders',
     },
     {
-      key: 'users', icon: <UserOutlined/>, label: 'Users',
+      key: 'users', icon: <UserOutlined style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Users',
     },
     {
-      key: 'settings', icon: <SettingFilled/>, label: 'Settings',
+      key: 'settings', icon: <SettingFilled style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Settings',
     }
   ];
 
@@ -57,6 +56,7 @@ const DefaultLayout = () => {
   const {user, token, setUser, setPermissions, setRoles, setToken} = useStateContext();
 
   useEffect(() => {
+
     if (collapsed) {
       setNavbarWidth("calc(100% - 82px)")
       setNavbarLeft("82px")
@@ -171,7 +171,7 @@ const DefaultLayout = () => {
               className: 'trigger', onClick: sidebarCollapseToggle,
             })}
           </div>
-          {user.image ? <NavigationDropdown handleLogout={handleLogout}/>: null}
+          {user && Object.keys(user).length !== 0 ? <NavigationDropdown user={user} handleLogout={handleLogout}/>: null}
         </div>
       </Header>
       <BreadCrumb/>

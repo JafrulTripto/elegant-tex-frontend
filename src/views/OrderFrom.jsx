@@ -55,12 +55,8 @@ const OrderFrom = () => {
   const [divisionLoading, setDivisionLoading] = useState(false);
   const [districtLoading, setDistrictLoading] = useState(false);
   const [upazilaLoading, setUpazilaLoading] = useState(false);
-
-  const [uploaded, setUploaded] = useState(false);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const [isMerchantOrder, setIsMerchantOrder] = useState(false)
 
   const draggerProps = {
     name: "orderImage",
@@ -76,7 +72,6 @@ const OrderFrom = () => {
       }
       if (status === 'done') {
         setLoading(false);
-        setUploaded(true);
         setFiles(info.fileList);
         toast.success(`${info.file.name} file uploaded successfully.`);
       } else if (status === 'error') {

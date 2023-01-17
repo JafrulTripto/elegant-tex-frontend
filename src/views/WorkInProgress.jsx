@@ -2,9 +2,8 @@ import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPersonDigging} from "@fortawesome/free-solid-svg-icons";
 import {colors} from "../utils/Colors";
-import {Typography} from "antd";
 
-const { Title } = Typography;
+
 const WorkInProgress = () => {
   return (
     <div className="flex flex-col justify-center items-center" style={{height:"calc(100vh - 250px)"}}>
