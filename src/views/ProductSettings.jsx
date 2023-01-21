@@ -76,10 +76,13 @@ const ProductSettings = () => {
     }
   }, [])
   const handleProductSettingsFetch = (element) => {
+    console.log(element)
     if (element === 'fabric') {
       return getProductFabrics;
     } else if (element === 'color') {
       return getProductColors;
+    } else if (element === 'deliveryChannel') {
+      return getDeliveryChannels;
     } else  {
       return getProductTypes;
     }

@@ -33,7 +33,7 @@ root.render(
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme="colored"
       />
       <RouterProvider router={router}/>
     </ConfigProvider>

@@ -23,7 +23,7 @@ const ProductSettingsForm = (props) => {
       toast.success(response.data.message);
       handleClose()
       form.resetFields();
-      element.fetchFunc();
+      await element.fetchFunc();
     } catch (error) {
       toast.error(error.response.statusText);
     }

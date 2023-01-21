@@ -77,6 +77,10 @@ const router = createBrowserRouter([
       {
         path: '/settings/marketplaceSettings',
         element: <MarketplaceSettings/>
+      },
+      {
+        path: '/notFound',
+        element: <NotFound/>
       }
     ]
   },

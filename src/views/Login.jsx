@@ -75,7 +75,7 @@ export default function Login() {
                     },
                   ]}
                 >
-                  <Input prefix={<UserOutlined style={{color: colors.primary}} className="site-form-item-icon"/>}
+                  <Input size={"large"} prefix={<UserOutlined style={{color: colors.primary}} className="site-form-item-icon"/>}
                          placeholder="Email"/>
                 </Form.Item>
 
@@ -88,7 +88,7 @@ export default function Login() {
                     },
                   ]}
                 >
-                  <Input prefix={<LockOutlined style={{color: colors.primary}} className="site-form-item-icon"/>}
+                  <Input size={"large"} prefix={<LockOutlined style={{color: colors.primary}} className="site-form-item-icon"/>}
                          type="password"
                          placeholder="Password"/>
                 </Form.Item>

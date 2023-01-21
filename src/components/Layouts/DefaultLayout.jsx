@@ -12,6 +12,7 @@ import {ElegantTexIcon} from "../../utils/icons/ElegantTexIcon";
 import NavigationDropdown from "../NavigationDropdown";
 import BreadCrumb from "../BreadCrumb";
 import {colors} from "../../utils/Colors";
+import permission from "../Util/Permission";
 
 
 const {Header, Sider, Content} = Layout;
@@ -32,28 +33,29 @@ const DefaultLayout = () => {
 
   const routes = [
     {
-      key: 'dashboard', icon: <DashboardFilled style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Dashboard',
+      key: 'dashboard', icon: <DashboardFilled style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Dashboard', permission: ''
     },
     {
-      key: 'merchants', icon: <ShopOutlined style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Merchants',
+      key: 'merchants', icon: <ShopOutlined style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Merchants', permission: 'VIEW_MERCHANTS'
     },
     {
-      key: 'orders', icon: <ShoppingFilled style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Orders',
+      key: 'orders', icon: <ShoppingFilled style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Orders', permission: 'VIEW_ORDERS'
     },
     {
-      key: 'users', icon: <UserOutlined style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Users',
+      key: 'users', icon: <UserOutlined style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Users', permission: 'VIEW_USERS'
     },
     {
-      key: 'settings', icon: <SettingFilled style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Settings',
+      key: 'settings', icon: <SettingFilled style={{color:colors.secondary, fontSize:"22px"}}/>, label: 'Settings', permission:'VIEW_SETTINGS'
     }
   ];
 
 
 
 
+
   const [loading, setLoading] = useState(false);
 
-  const {user, token, setUser, setPermissions, setRoles, setToken} = useStateContext();
+  const {user, token, setUser, setPermissions, setRoles, setToken, permissions} = useStateContext();
 
   useEffect(() => {
 
@@ -129,6 +131,14 @@ const DefaultLayout = () => {
     })
 
   }
+  const generatePermittedRoutes = () => {
+    console.log(permissions)
+    return routes.filter(route => {
+      if (route.permission === '') return route;
+      return permissions.indexOf(route.permission)  > -1;
+    })
+
+  }
 
   if (loading) {
     return <Loading/>
@@ -152,7 +162,7 @@ const DefaultLayout = () => {
         theme="dark"
         mode="inline"
         defaultSelectedKeys={route[1] === '' ? 'dashboard' : route[1]}
-        items={routes}
+        items={generatePermittedRoutes()}
         onClick={(item) => navigate("/" + item.key)}
       />
     </Sider>

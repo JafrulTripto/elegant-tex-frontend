@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {Card, Skeleton, Image, Col, Row, Empty, Table} from 'antd';
 import axiosClient from "../axios-client.js";
@@ -8,13 +8,14 @@ import axiosClient from "../axios-client.js";
 import PaymentSummary from "../components/Order/PaymentSummary";
 import CustomerInfo from "../components/Order/CustomerInfo";
 import OrderHeader from "../components/Order/OrderHeader";
+import DeliveryInfo from "../components/Order/DeliveryInfo";
 
 
 const Order = () => {
 
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState({});
-
+  const navigate = useNavigate()
 
   const {id} = useParams()
 
@@ -32,7 +33,9 @@ const Order = () => {
       console.log(order.data.data)
       setLoading(false)
     } catch (error) {
+      console.log(error)
       const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+      navigate('/notFound');
       toast.error(message);
       setLoading(false);
     }
@@ -92,6 +95,12 @@ const Order = () => {
               <Card title="Payment Summary">
                 {order.payment ?
                   <PaymentSummary payment={order.payment}/> : <Skeleton paragraph={{rows: 3}}/>}
+              </Card>
+            </Col>
+            <Col xs={24} md={24}>
+              <Card title="Delivery Info">
+                {order.payment ?
+                  <DeliveryInfo deliveryDate={order.deliveryDate} deliveryChannel={order.deliveryChannel}/> : <Skeleton paragraph={{rows: 3}}/>}
               </Card>
             </Col>
           </Row>

@@ -19,14 +19,14 @@ const SettingsList = () => {
       icon: <UsergroupAddOutlined style={iconStyle}/>,
       link: "/settings/roleSettings",
       description: "Manage the application roles.User can have multiple roles.",
-      permission: null
+      permission: ""
     },
     {
       title: 'Permission Settings',
       icon: <UnlockOutlined style={iconStyle}/>,
       link: "/settings/permissionSettings",
       description: "Manage the application permissions.",
-      permission: 'PERMISSION:VIEW'
+      permission: ''
     },
     {
       title: 'Marketplace Settings',
