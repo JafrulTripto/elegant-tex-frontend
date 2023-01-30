@@ -16,6 +16,7 @@ import OrderFrom from "./views/OrderFrom.jsx";
 import Order from "./views/Order.jsx";
 import Merchants from "./views/Merchants";
 import MerchantForm from "./views/MerchantForm";
+import Error from "./views/Error";
 
 const router = createBrowserRouter([
   {
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login/>
       },
+      {
+        path: '/error',
+        element: <Error/>
+      }
     ]
   },
   {

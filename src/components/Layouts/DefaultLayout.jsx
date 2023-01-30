@@ -13,6 +13,7 @@ import NavigationDropdown from "../NavigationDropdown";
 import BreadCrumb from "../BreadCrumb";
 import {colors} from "../../utils/Colors";
 import permission from "../Util/Permission";
+import Error from "../../views/Error";
 
 
 const {Header, Sider, Content} = Layout;
@@ -67,14 +68,18 @@ const DefaultLayout = () => {
       setNavbarLeft("250px")
     }
     if (token) {
+      setLoading(true);
       axiosClient.get('/user').then(({data}) => {
         setUser(data.user);
+        setLoading(false);
         setPermissions(data.permissions);
         setRoles(data.roles);
       }).catch(error => {
+        setToken(null)
+        setLoading(false);
+        navigate("/error")
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
         toast.error(message);
-        navigate("/login")
       })
     }
   }, [])
@@ -140,9 +145,7 @@ const DefaultLayout = () => {
 
   }
 
-  if (loading) {
-    return <Loading/>
-  }
+
   return (<Layout style={{minHeight: "100vh"}}>
     <Sider
       style={{
