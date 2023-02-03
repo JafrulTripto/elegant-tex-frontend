@@ -58,6 +58,7 @@ function AssignUserRoles(props) {
     let data = tempData.filter(item => item.roles.includes(props.role)).map(item => item.key)
     setTargetKeys(data)
     setRoleData(tempData);
+    console.log(props.role)
     setLoading(false);
   }
 
@@ -67,6 +68,7 @@ function AssignUserRoles(props) {
         listStyle={{width: 500, height: 350}}
         dataSource={roleData}
         showSearch
+        disabled={props.role === 'SUDO'}
         titles={[<h3 style={{color: colors.primary, fontWeight: "700"}}>Users</h3>,
           <h3 style={{color: colors.primary, fontWeight: "700"}}>{props.role}</h3>]}
 

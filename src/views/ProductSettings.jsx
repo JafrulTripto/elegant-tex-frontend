@@ -37,7 +37,7 @@ const productSettingsLists = [
 const columns = [
   {
     title: 'Name',
-    key:'name',
+    key: 'name',
     dataIndex: 'name',
     width: "75%"
   },
@@ -83,7 +83,7 @@ const ProductSettings = () => {
       return getProductColors;
     } else if (element === 'deliveryChannel') {
       return getDeliveryChannels;
-    } else  {
+    } else {
       return getProductTypes;
     }
   }
@@ -243,7 +243,14 @@ const ProductSettings = () => {
             productSettingsListsData.map((productSettingsList) => {
 
               return <Col xs={24} md={12} lg={12} key={productSettingsList.key}>
-                  <Table loading={productSettingsList.isDataLoading} rowKey={"id"} columns={columns} title={() => tableHeader(productSettingsList)} dataSource={productSettingsList.data} />
+                <Table loading={productSettingsList.isDataLoading}
+                       pagination={{
+                         pageSize: 5
+                       }}
+                       rowKey={"id"}
+                       columns={columns}
+                       title={() => tableHeader(productSettingsList)}
+                       dataSource={productSettingsList.data}/>
               </Col>
             })
           }

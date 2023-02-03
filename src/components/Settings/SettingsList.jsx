@@ -26,7 +26,7 @@ const SettingsList = () => {
       icon: <UnlockOutlined style={iconStyle}/>,
       link: "/settings/permissionSettings",
       description: "Manage the application permissions.",
-      permission: ''
+      permission: 'VIEW_PERMISSIONS'
     },
     {
       title: 'Marketplace Settings',
