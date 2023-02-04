@@ -4,6 +4,7 @@ import {toast} from "react-toastify";
 import {Avatar, Button, Card, Col, Modal, Row, Space, Table} from "antd";
 import {DeleteOutlined, EditOutlined, PlusOutlined, UserOutlined} from "@ant-design/icons";
 import axiosClient from "../axios-client.js";
+import moment from "moment";
 
 const Users = () => {
   const navigate = useNavigate()
@@ -120,6 +121,12 @@ const Users = () => {
       dataIndex: 'address',
       key: 'address',
       render: (address) => `${address.address}, ${address.upazila} ,${address.district}`
+    },
+    {
+      title: 'Last Login',
+      dataIndex: 'last_login',
+      key: 'last_login',
+      render: (data) => moment(data).format('MMMM Do YYYY, h:mm a')
     },
     {
       title: 'Action',
