@@ -82,8 +82,7 @@ const Order = () => {
 
   return (
     <>
-      {order.id ? <OrderHeader orderable={order.orderable} orderId={order.id} status={order.status}
-                               createdAt={order.createdAt}/> : <Skeleton paragraph={{rows: 2}}/>}
+      {order.id ? <OrderHeader order ={order}/> : <Skeleton paragraph={{rows: 2}}/>}
       <Row gutter={[12, 0]}>
         <Col xs={24} md={16}>
           <Row gutter={[12, 12]}>
