@@ -26,12 +26,12 @@ export default function Login() {
     }
     setLoading(true);
     axiosClient.post('auth/login', payload).then(({data}) => {
-      setToken(data.token);
-      setUser(data.user);
+      setToken(data.access_token, data.expires_in);
       setLoading(false);
     }).catch(error => {
       const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
       toast.error(message);
+      console.log(message)
       setLoading(false);
     })
   };

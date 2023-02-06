@@ -69,7 +69,7 @@ const DefaultLayout = () => {
     }
     if (token) {
       setLoading(true);
-      axiosClient.get('/user').then(({data}) => {
+      axiosClient.post('auth/me').then(({data}) => {
         setUser(data.user);
         setLoading(false);
         setPermissions(data.permissions);
@@ -77,7 +77,6 @@ const DefaultLayout = () => {
       }).catch(error => {
         setToken(null)
         setLoading(false);
-        navigate("/error")
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
         toast.error(message);
       })
@@ -137,7 +136,6 @@ const DefaultLayout = () => {
 
   }
   const generatePermittedRoutes = () => {
-    console.log(permissions)
     return routes.filter(route => {
       if (route.permission === '') return route;
       return permissions.indexOf(route.permission)  > -1;
