@@ -147,6 +147,7 @@ function Sales() {
 
   };
   const handleCancel = () => {
+    setOrderStatus(null);
     setIsModalOpen(false);
   }
   const handleStatusChange = (status) => {
@@ -289,7 +290,7 @@ function Sales() {
       <Tabs defaultActiveKey="1" onChange={onTabChange} items={tabItems}></Tabs>
       <Modal title="Status" confirmLoading={statusLoading} width={400} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Select
-          defaultValue={orderStatus}
+          value={orderStatus}
           style={{ width: "100%" }}
           onChange={handleStatusChange}
           options={OrderStatusEnum}
