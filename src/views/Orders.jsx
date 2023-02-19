@@ -114,7 +114,9 @@ function Sales() {
     return (
       <Space size="middle">
         <Button className='edit-btn' icon={<EditOutlined/>} size={"small"} onClick={() => handleEditOrder(record)}/>
-        <Button type="primary" danger icon={<DeleteOutlined/>} size={"small"} onClick={() => handleDeleteOrder(record)}/>
+        <Permission required={'DELETE_ORDER'}>
+          <Button type="primary" danger icon={<DeleteOutlined/>} size={"small"} onClick={() => handleDeleteOrder(record)}/>
+        </Permission>
       </Space>
     );
   }

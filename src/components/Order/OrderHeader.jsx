@@ -463,7 +463,7 @@ const OrderHeader = ({order}) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <h3 className="text-2xl text-stone-900">
-            Order #{order.orderId}
+            Order #{order.id}
           </h3>
           <div className="mb-3 pl-5 font-bold">
             <Tag color={generateTagColorFromStatus(order.status)}>{order.status}</Tag>
@@ -474,11 +474,12 @@ const OrderHeader = ({order}) => {
           <div className="text-sm font-semibold text-zinc-500">
             <span className="text-sm font-thin">Ordered By:</span> {order.orderable.name}
           </div>
-          <div className="pl-4">
-            <Button style={{color: colors.secondary}} onClick={generatePDF} loading={pdfLoading} icon={<DownloadOutlined/>}
-                    size={"small"}>Download PDF
+          {order.orderType === 'Marketplace'? <div className="pl-4">
+            <Button type="dashed" onClick={generatePDF} loading={pdfLoading} icon={<DownloadOutlined/>}
+            >Download PDF
             </Button>
-          </div>
+          </div> : null}
+
         </div>
       </div>
       <CalendarOutlined className="text-zinc-500 pr-1"/>
