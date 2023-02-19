@@ -5,7 +5,7 @@
 :root {
   --primaryColor: #1DA57A;
   --primaryDark: #001d3d;
-  --secondaryColor: #003566;
+  --secondaryColor: #00425A;
   --secondaryDark: #003566;
 }
 
@@ -131,6 +131,9 @@ ul {
     display: none;
   }
 }
+
+
+
 
 .padding-xs { padding: .25em; }
 .padding-sm { padding: .5em; }

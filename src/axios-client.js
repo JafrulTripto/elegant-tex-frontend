@@ -11,7 +11,7 @@ async function refreshToken() {
 
     const timeLeft = new Date(expiryTime) - new Date();
 
-    if (expiryTime && timeLeft < 60 * 1000) { // less than 60 seconds
+    if (expiryTime && timeLeft < 60 * 10000) { // less than 10 min
       const res = await axiosClient.post("/auth/refresh", {}, {
         headers: {
           Authorization: `Bearer ${token}`

@@ -1,10 +1,11 @@
 import React from 'react';
-import WorkInProgress from "./WorkInProgress";
+import DashboardWidgets from "../components/Dashboard/DashboardWidgets";
 
 const Dashboard = () => {
+
   return (
 
-      <WorkInProgress/>
+      <DashboardWidgets/>
 
   );
 };

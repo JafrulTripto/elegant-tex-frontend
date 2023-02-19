@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Space, Card, Row, Col, Button, Input, Table, Tag, Tabs, Switch, Select, Modal} from 'antd';
+import {Space, Card, Row, Col, Button, Input, Table, Tag, Tabs, Switch, Select, Modal, Alert} from 'antd';
 
 import {NavLink, useNavigate} from "react-router-dom";
 
@@ -22,6 +22,7 @@ function Sales() {
 
   const [loading, setLoading] = useState(false);
   const [statusLoading, setStatusLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [orders, setOrders] = useState([]);
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1);
@@ -72,14 +73,48 @@ function Sales() {
   const handleEditOrder = (record) => {
   }
   const handleDeleteOrder = (record) => {
+    Modal.confirm({
+      title: 'Do you want to delete this order?',
+      okText: "Yes",
+      okType: "primary",
+      okButtonProps: {danger: true},
+      onOk: () => confirmDeleteOrder(record.id)
+    })
+
   }
+
+  const confirmDeleteOrder = async (id) => {
+    console.log(id)
+    try {
+      const data = await axiosClient.delete(`/orders/delete/${id}`);
+      toast.warning(data.data.message);
+      fetchOrders(1, orderType);
+
+    } catch (error) {
+      setDeleteLoading(false);
+      const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+      toast.error(message);
+    }
+  }
+
+  // const confirmDeleteOrder = (id) => {
+  //   setDeleteLoading(true);
+  //   axiosClient.delete(`/orders/delete/${id}`).then((response) =>{
+  //     toast.success(response.data.message);
+  //     setDeleteLoading(false);
+  //   }).catch((error) => {
+  //     setDeleteLoading(false);
+  //     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+  //     toast.error(message);
+  //   });
+  // }
 
 
   const renderActionButtons = (record) => {
     return (
       <Space size="middle">
         <Button className='edit-btn' icon={<EditOutlined/>} size={"small"} onClick={() => handleEditOrder(record)}/>
-        <Button type="danger" icon={<DeleteOutlined/>} size={"small"} onClick={() => handleDeleteOrder(record)}/>
+        <Button type="primary" danger icon={<DeleteOutlined/>} size={"small"} onClick={() => handleDeleteOrder(record)}/>
       </Space>
     );
   }
