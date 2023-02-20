@@ -17,6 +17,7 @@ import Order from "./views/Order.jsx";
 import Merchants from "./views/Merchants";
 import MerchantForm from "./views/MerchantForm";
 import Error from "./views/Error";
+import OrderFormV2 from "./views/OrderFormV2";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: '/orders/orderForm',
         element: <OrderFrom/>
+      },
+      {
+        path: '/orders/orderFormV2',
+        element: <OrderFormV2/>
       },
       {
         path: '/orders/:id',

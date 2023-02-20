@@ -17,7 +17,6 @@ async function refreshToken() {
           Authorization: `Bearer ${token}`
         }
       });
-      console.log(res)
       localStorage.setItem("ACCESS_TOKEN", res.data.access_token);
       localStorage.setItem("TOKEN_EXPIRATION", new Date(Date.now() + res.data.expires_in * 1000));
     }

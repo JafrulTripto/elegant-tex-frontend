@@ -9,7 +9,6 @@ export const useDeliveryChannels = () => {
   const fetchDeliveryChannels = () => {
     axiosClient.get(`/settings/deliveryChannels/index`).then((response) => {
       setDeliveryChannels([...response.data.data])
-      console.log(response.data.data)
     }).catch((error) => {
       const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
       toast.error(message);

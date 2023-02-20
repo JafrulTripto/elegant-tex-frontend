@@ -33,7 +33,7 @@ function Sales() {
   const [orderId, setOrderId] = useState(null);
 
   const handleNewOrder = (orderType) => {
-    navigate('/orders/orderForm', {state: {orderType}})
+    navigate('/orders/orderFormV2', {state: {orderType}})
   }
 
   useEffect(() => {
